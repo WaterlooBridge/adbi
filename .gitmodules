@@ -1,0 +1,3 @@
+[submodule "instruments/example2/demo/epic"]
+	path = instruments/example2/demo/epic
+	url = https://github.com/WaterlooBridge/epic.git
