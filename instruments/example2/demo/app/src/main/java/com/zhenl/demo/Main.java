@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.taobao.android.dexposed.ClassUtils;
 import com.taobao.android.dexposed.DexposedBridge;
 import com.taobao.android.dexposed.XC_MethodHook;
 
@@ -38,6 +39,20 @@ public class Main {
                 Log.e("epic.hook", "loadUrl:" + param.args[0]);
             }
         });
+        String SQLiteDatabaseClass = "com.tencent.wcdb.database.SQLiteDatabase";
+        try {
+            Class cls = ClassUtils.getClass(SQLiteDatabaseClass);
+            DexposedBridge.findAndHookMethod(cls, "rawQueryWithFactory",
+                    SQLiteDatabaseClass + ".CursorFactory", String.class, String[].class, String.class, "com.tencent.wcdb.support.CancellationSignal",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            Log.e("rawQueryWithFactory", param.args[1] + ":" + param.args[3]);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static class GCDetect {

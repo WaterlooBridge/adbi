@@ -456,7 +456,7 @@ lookup_func_sym(symtab_t s, char *name, unsigned long *val)
 static int
 find_name(pid_t pid, char *name, unsigned long *addr)
 {
-	struct mm mm[1000];
+	struct mm mm[2000];
 	unsigned long libcaddr;
 	int nmm;
 	char libc[256];
@@ -485,7 +485,7 @@ find_name(pid_t pid, char *name, unsigned long *addr)
 
 static int find_linker(pid_t pid, unsigned long *addr)
 {
-	struct mm mm[1000];
+	struct mm mm[2000];
 	unsigned long libcaddr;
 	int nmm;
 	char libc[256];
@@ -541,7 +541,7 @@ static int find_libname(const char *libn, char *name, int len, unsigned long *st
 
 int find_symbol(pid_t pid, const char *name, const char *libn,
               unsigned long *addr) {
-    struct mm mm[1000] = { 0 };
+    struct mm mm[2000] = { 0 };
     unsigned long libcaddr;
     int nmm;
     char libc[1024] = { 0 };
@@ -573,7 +573,7 @@ int find_symbol(pid_t pid, const char *name, const char *libn,
 
 unsigned long get_module_base(pid_t pid, const char* libn)    
 {
-    struct mm mm[1000] = { 0 };
+    struct mm mm[2000] = { 0 };
     unsigned long libcaddr = 0;
     int nmm;
     char libc[1024] = { 0 };
@@ -597,12 +597,12 @@ static void init_sdk_ver(){
 
     int len = __system_property_get("ro.build.version.sdk", value);
     if (len <= 0) {
-        printf("[init_sdk_ver] read ro.build.version.sdk error!");
+        printf("read ro.build.version.sdk error!");
         return;
     }
 
     sdk_ver = atoi(value);
-    printf("[init_sdk_ver] ro.build.version.sdk: %d\n", sdk_ver);
+    printf("ro.build.version.sdk: %d\n", sdk_ver);
 }
 
 /* Write NLONG 4 byte words from BUF into PID starting
