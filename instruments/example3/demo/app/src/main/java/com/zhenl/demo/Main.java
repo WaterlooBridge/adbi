@@ -6,9 +6,10 @@ import android.os.Message;
 import android.util.Log;
 import android.webkit.WebView;
 
-import com.taobao.android.dexposed.ClassUtils;
-import com.taobao.android.dexposed.DexposedBridge;
-import com.taobao.android.dexposed.XC_MethodHook;
+import com.lody.whale.xposed.ClassUtils;
+import com.lody.whale.xposed.XC_MethodHook;
+import com.lody.whale.xposed.XposedBridge;
+import com.lody.whale.xposed.XposedHelpers;
 
 public class Main {
 
@@ -19,7 +20,7 @@ public class Main {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    Log.e("epic.hook", "keep alive is running");
+                    Log.e("whale.hook", "keep alive is running");
                     sendEmptyMessageDelayed(0, 10000);
                     break;
                 case 1:
@@ -33,17 +34,17 @@ public class Main {
         detect = new GCDetect();
         handler.removeMessages(0);
         handler.sendEmptyMessageDelayed(0, 10000);
-        DexposedBridge.findAndHookMethod(WebView.class, "loadUrl", String.class, new XC_MethodHook() {
+        XposedBridge.hookAllMethods(WebView.class, "loadUrl", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                Log.e("epic.hook", "loadUrl:" + param.args[0]);
+                Log.e("whale.hook", "loadUrl:" + param.args[0]);
             }
         });
         String SQLiteDatabaseClass = "com.tencent.wcdb.database.SQLiteDatabase";
         try {
             Class cls = ClassUtils.getClass(SQLiteDatabaseClass);
-            DexposedBridge.findAndHookMethod(cls, "rawQueryWithFactory",
-                    SQLiteDatabaseClass + ".CursorFactory", String.class, Object[].class, String.class, "com.tencent.wcdb.support.CancellationSignal",
+            XposedHelpers.findAndHookMethod(cls, "rawQueryWithFactory",
+                    ClassUtils.getClass(SQLiteDatabaseClass + ".CursorFactory"), String.class, Object[].class, String.class, "com.tencent.wcdb.support.CancellationSignal",
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -58,7 +59,7 @@ public class Main {
     static class GCDetect {
         @Override
         protected void finalize() throws Throwable {
-            Log.e("epic.hook", "Final redemption");
+            Log.e("whale.hook", "Final redemption");
             handler.sendEmptyMessageDelayed(1, 1000);
             super.finalize();
         }
