@@ -15,7 +15,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE    := libexample2
+LOCAL_MODULE    := libexample3
 LOCAL_SRC_FILES := ../dex_inject.c
 LOCAL_CFLAGS := -g
 LOCAL_LDLIBS+= -L$(SYSROOT)/usr/lib -llog

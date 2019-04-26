@@ -1,3 +1,6 @@
 [submodule "instruments/example2/demo/epic"]
 	path = instruments/example2/demo/epic
 	url = https://github.com/WaterlooBridge/epic.git
+[submodule "instruments/example3/demo/app/src/main/whale"]
+	path = instruments/example3/demo/app/src/main/whale
+	url = https://github.com/WaterlooBridge/whale.git

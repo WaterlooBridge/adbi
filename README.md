@@ -64,6 +64,7 @@ adb push libs/armeabi/libexample.so /data/local/tmp/
 ```
 adb shell
 su
+setenforce 0
 cd /data/local/tmp
 >/sdcard/adbi_example.log
 # GET PID from tv.danmaku.bili
@@ -77,8 +78,41 @@ output should look similar to:
 started
 hooking:   ffio_open_whitelist = 0xc9d7eead THUMB using 0xc8f21839
 Sun Dec  9 13:36:00 2018
- ijkio:cache:ffio:ijkhttphook:http://124.14.12.185/upgcxcode/94/54/66295494/66295494-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEuENvNC8aNEVEtEvE9IMvXBvE2ENvNCImNEVEIj0Y2J_aug859r1qXg8xNEVE5XREto8GuFGv2U7SuxI72X6fTr859IB_&deadline=1544340959&gen=playurl&nbs=1&oi=1710530337&os=acache&platform=android&trid=646bae680a54420ea3db1428194658b3&uipk=5&upsig=b92d006fb988313c30bfa5d4d5608887
+ ijkio:cache:ffio:ijkhttphook:http://124.14.12.185/upgcxcode/94/54/66295494/66295494-1-30280.m4s
 Sun Dec  9 13:36:02 2018
- ijkio:cache:ffio:ijkhttphook:http://124.14.12.168/upgcxcode/94/54/66295494/66295494-1-30077.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEuENvNC8aNEVEtEvE9IMvXBvE2ENvNCImNEVEIj0Y2J_aug859r1qXg8xNEVE5XREto8GuFGv2U7SuxI72X6fTr859IB_&deadline=1544340959&gen=playurl&nbs=1&oi=1710530337&os=acache&platform=android&trid=646bae680a54420ea3db1428194658b3&uipk=5&upsig=ba99a360216dd7deb79883c3b4a81ae2
+ ijkio:cache:ffio:ijkhttphook:http://124.14.12.168/upgcxcode/94/54/66295494/66295494-1-30077.m4s
 ```
 
+=== Extra ===
+
+= build instrumentation example3 =
+
+```
+cd example3
+cd jni
+ndk-build
+cd ..
+adb push libs/armeabi/libexample3.so /data/local/tmp/
+cd demo //open Android Studio to Build APK and unzip app-debug.apk
+adb push classes.dex /sdcard/com.zhenl.demo/classes.dex
+adb push lib/armeabi-v7a/libwhale.so /data/local/tmp/
+```
+
+=== How to Run ===
+
+```
+adb shell
+su
+setenforce 0
+cd /data/local/tmp
+# GET PID from com.tencent.mm
+./hijack -d -p PID -l /data/local/tmp/libexample3.so
+logcat
+```
+
+output should look similar to:
+
+```
+whale.hook: keep alive is running
+rawQueryWithFactory: SELECT * FROM userinfo2 WHERE sid=?;:null
+```

@@ -9,6 +9,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/whale/java']
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -17,7 +22,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path "src/main/whale/CMakeLists.txt"
+            path "src/main/whale/whale/CMakeLists.txt"
         }
     }
 }
