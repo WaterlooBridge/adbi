@@ -93,7 +93,8 @@ cd jni
 ndk-build
 cd ..
 adb push libs/armeabi/libexample3.so /data/local/tmp/
-cd demo //open Android Studio to Build APK and unzip app-debug.apk
+cd demo #open Android Studio to Build APK
+cd app/build/outputs/apk/debug #unzip app-debug.apk
 adb push classes.dex /sdcard/com.zhenl.demo/classes.dex
 adb push lib/armeabi-v7a/libwhale.so /data/local/tmp/
 ```

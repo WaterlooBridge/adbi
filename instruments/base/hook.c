@@ -118,9 +118,15 @@ int hook(struct hook_t *h, int pid, char *libname, char *funcname, void *hook_ar
 		h->jumpt[10] = 0x81; // sub sp,sp,#4
 		h->jumpt[13] = 0xbd;
 		h->jumpt[12] = 0x20; // pop {r5, pc}
-		h->jumpt[15] = 0x46;
-		h->jumpt[14] = 0xaf; // mov pc, r5 ; just to pad to 4 byte boundary
-		memcpy(&h->jumpt[16], (unsigned char*)&h->patch, sizeof(unsigned int));
+		if (addr % 4 == 3) {
+			h->jumpt[3] = 0xa5;
+			h->jumpt[2] = 0x02; // add r5, pc, #8
+			memcpy(&h->jumpt[14], (unsigned char*)&h->patch, sizeof(unsigned int));
+		} else {
+			h->jumpt[15] = 0x46;
+			h->jumpt[14] = 0xaf; // mov pc, r5 ; just to pad to 4 byte boundary
+			memcpy(&h->jumpt[16], (unsigned char*)&h->patch, sizeof(unsigned int));
+		}
 		unsigned int orig = addr - 1; // sub 1 to get real address
 		for (i = 0; i < 20; i++) {
 			h->storet[i] = ((unsigned char*)orig)[i];
